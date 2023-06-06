@@ -1,0 +1,26 @@
+{
+  "name": "labecommerce-backend",
+  "version": "1.0.0",
+  "description": "Primeiro projeto em backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node ./build/index.js"
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariaritamonteiro/labecommerce-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariaritamonteiro/labecommerce-backend/issues"
+  },
+  "homepage": "https://github.com/mariaritamonteiro/labecommerce-backend#readme",
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "typescript": "^5.1.3"
+  }
+}
