@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.arrayDeProdutos = exports.arrayDeusuarios = void 0;
-exports.arrayDeusuarios = [
+exports.searchUser = exports.arrayDeProdutos = exports.arrayDeUsuarios = void 0;
+exports.arrayDeUsuarios = [
     {
         id: "01",
         name: "Maria",
@@ -33,4 +33,41 @@ exports.arrayDeProdutos = [
         imageUrl: "algum site bacana"
     }
 ];
+function creatUser(id, name, email, password, createdAt) {
+    const newObj = {
+        id: id,
+        name: name,
+        email: email,
+        password: password,
+        createdAt: createdAt
+    };
+    exports.arrayDeUsuarios.push(newObj);
+    return (console.log("Cadastro realizado com sucesso"));
+}
+function getAllUsers() {
+    return creatUser("03", "Henry", "baby@email.com", "09564", new Date().toDateString());
+}
+getAllUsers();
+function createProduct(id, name, price, description, imageUrl) {
+    const newProduct = {
+        id: id,
+        name: name,
+        price: price,
+        description: description,
+        imageUrl: imageUrl
+    };
+    exports.arrayDeProdutos.push(newProduct);
+    return (console.log("Produto criado com sucesso"));
+}
+function getAllProducts() {
+    return createProduct("produto3", "caixa", 400, "amplificada", "algum site bacana");
+}
+getAllProducts();
+const searchUser = (arrayDeProdutos, name) => {
+    return arrayDeProdutos.filter((user) => {
+        return user.name.toLowerCase() === name.toLowerCase();
+    });
+};
+exports.searchUser = searchUser;
+console.table((0, exports.searchUser)(exports.arrayDeProdutos, "Mesa"));
 //# sourceMappingURL=database.js.map
