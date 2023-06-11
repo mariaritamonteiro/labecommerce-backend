@@ -1,6 +1,8 @@
-import { arrayDeProdutos, arrayDeusuarios } from "./database";
+import { products, users } from "./database";
 
-console.table(arrayDeProdutos);
-console.table(arrayDeusuarios);
+console.table(products);
+console.table(users);
+
+
 
 
