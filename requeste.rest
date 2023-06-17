@@ -1,0 +1,55 @@
+###Get All Users
+GET http://localhost:3003/users
+
+###Get All Products 
+GET http://localhost:3003/product
+
+###Get All Products /refatorado
+GET http://localhost:3003/product?name=mesa
+
+
+
+
+###Create User
+POST http://localhost:3003/users
+content-type:application/json
+
+{
+    "id": "04",
+    "name":"Alladin",
+    "email": "amores@email.com",
+   "password": "love123",
+    "createdAt": "new Date().toISOString()"
+}
+
+
+###Create product
+POST http://localhost:3003/products 
+content-type:application/json
+
+{
+    "id":"produto4",
+    "name":"cadeira",
+    "price":12,
+    "description": "bobeira",
+    "imageUrl": "qualquer uma"
+}
+
+###Delete User by id
+DELETE http://localhost:3003/users/01
+
+
+###Delete Product by id
+DELETE http://localhost:3003/product/produto2
+
+###Edit Product by id
+PUT http://localhost:3003/product/produto1
+content-type:application/json
+
+{
+    "id":"produt2",
+    "name":"tst",
+    "price":25,
+    "description":"mesa",
+    "imageUrl":"algum "
+}

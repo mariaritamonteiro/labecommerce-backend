@@ -25,63 +25,67 @@ export const products: TProducts[] = [
         description: "Marly e Eu",
         imageUrl: "algum site bacana"
     },
-
     {
         id: "produto2",
         name: "mesa",
         price: 250,
         description: "mesa de jantar",
         imageUrl: "algum site bacana"
-    }
+    },
 
 ]
 
-function creatUser(id: string, name: string, email: string, password: string, createdAt: string) {
-    const newUsers = {
-        id: id,
-        name: name,
-        email: email,
-        password: password,
-        createdAt: createdAt
-    }
-    users.push(newUsers)
-    return (    
-        console.log("Cadastro realizado com sucesso")
-    )
+//createUser
+const createUser = (newUser: TUsers): void => {
+    users.push(newUser)
+    console.log("Cadastro de novo usuario realizado com sucesso");
+}
+createUser({
+    id: "03",
+    name: "Henry",
+    email: "baby@email.com",
+    password: "12345",
+    createdAt: new Date().toDateString()
+})
+
+//getAllUsers
+export const getAllUsers = ()=>{
+    return users
 }
 
-function getAllUsers() {
-    return creatUser("03", "Henry", "baby@email.com", "09564", new Date().toDateString());
-}
-getAllUsers()
 
-
-function createProduct(id: string, name: string, price: number, description: string, imageUrl: string) {
-    const newProduct = {
-        id: id,
-        name: name,
-        price: price,
-        description: description,
-        imageUrl: imageUrl
-    }
+//createProduct
+const createProduct = (newProduct: TProducts): void => {
     products.push(newProduct)
-    return (
-        console.log("Produto criado com sucesso")
+    console.log("Cadastro de novo produto realizado com sucesso");
+}
+createProduct({
+    id: "produto3",
+    name: "caixa",
+    price: 400,
+    description: "amplificada",
+    imageUrl: "algum site bacana"
+})
 
-    )
+//getAllProducts 
+export const getAllProducts =()=>{
+    return products
 }
 
-function getAllProducts() {
-    return createProduct("produto3", "caixa", 400, "amplificada", "algum site bacana")
-}
-getAllProducts()
-
-export const searchUser = (products:TProducts[], name:string):TProducts[]=> {
-    return products.filter((user)=>{
-        return user.name.toLowerCase() === name.toLowerCase()
+//searchProductsByName 
+export const searchUsersByName = ( name:string):TUsers[]=> {
+    return users.filter((user)=>{
+        return user.name.toLowerCase().includes(name.toLowerCase())
     })   
 }
-console.table(searchUser(products,"Mesa"))
+
+//searchProductsByName
+export const searchProductsByName = ( name:string):TProducts[]=> {
+    return products.filter((product)=>{
+        return product.name.toLowerCase().includes(name.toLowerCase())
+    })   
+}
+console.table(searchProductsByName("Mesa")) 
 
 
 
