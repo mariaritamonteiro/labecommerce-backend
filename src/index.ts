@@ -42,6 +42,7 @@ app.get("/users", (req: Request, res: Response) => {
 })
 
 //Get All Products
+
 app.get("/products", (req: Request, res: Response) => {
     try {
         const name = req.query.name
