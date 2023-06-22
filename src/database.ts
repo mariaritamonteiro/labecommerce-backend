@@ -35,7 +35,7 @@ export const products: TProducts[] = [
 
 ]
 
-//createUser
+/* //createUser
 const createUser = (newUser: TUsers): void => {
     users.push(newUser)
     console.log("Cadastro de novo usuario realizado com sucesso");
@@ -86,7 +86,7 @@ export const searchProductsByName = ( name:string):TProducts[]=> {
     })   
 }
 console.table(searchProductsByName("Mesa")) 
-
+ */
 
 
 
