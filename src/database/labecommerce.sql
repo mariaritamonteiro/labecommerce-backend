@@ -103,16 +103,18 @@ SELECT *FROM products;
 
 -- Get All User
 -- retorna todas as pessoas cadastradas
-SELECT name FROM users;
+SELECT * FROM users;
+
 
 -- Get All Products (funcionalida 1)
 -- retorna todos os produtos cadastradas
-SELECT name FROM products;
+SELECT * FROM products;
+
 
 -- Get all Products (funcionalida 2)
--- retorna todos os produtos que possuem no seu nome "gosto"
-SELECT name FROM products
-WHERE 
+-- retorna todos os produtos que possuem "a" no seu nome.
+SELECT * FROM products
+WHERE name LIKE '%a%';
 
 -- Create user
 -- criar uma nova pessoa na Tabela
