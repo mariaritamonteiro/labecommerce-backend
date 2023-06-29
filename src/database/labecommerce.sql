@@ -1,5 +1,7 @@
 -- Active: 1687455032482@@127.0.0.1@3306
+
 --Criando a tabela USERS
+
 CREATE TABLE
     users (
         id TEXT PRIMARY KEY UNIQUE NOT NULL,
@@ -10,6 +12,7 @@ CREATE TABLE
     );
 
 --Inserir dados na tabela
+
 INSERT INTO
     users(
         id,
@@ -39,15 +42,19 @@ VALUES (
     );
 
 --Para visualzar a estrutura da tabela
+
 SELECT *FROM users;
 
 --Deletar tabela inteira
+
 DROP TABLE users;
 
 --Visualizarr estrutura da tabela
+
 PRAGMA table_info ('users');
 
 --Criando a tabela PRODUCTS
+
 CREATE TABLE
     products (
         id TEXT PRIMARY KEY UNIQUE NOT NULL,
@@ -58,6 +65,7 @@ CREATE TABLE
     );
 
 --Inserindo dados na tabela
+
 INSERT INTO
     products (
         id,
@@ -99,23 +107,31 @@ VALUES (
     );
 
 --Visualizando a estrutura da tabela
+
 SELECT *FROM products;
 
 -- Get All User
+
 -- retorna todas as pessoas cadastradas
-SELECT name FROM users;
+
+SELECT * FROM users;
 
 -- Get All Products (funcionalida 1)
+
 -- retorna todos os produtos cadastradas
-SELECT name FROM products;
+
+SELECT * FROM products;
 
 -- Get all Products (funcionalida 2)
--- retorna todos os produtos que possuem no seu nome "gosto"
-SELECT name FROM products
-WHERE 
+
+-- retorna todos os produtos que possuem "a" no seu nome.
+
+SELECT * FROM products WHERE name LIKE '%a%';
 
 -- Create user
+
 -- criar uma nova pessoa na Tabela
+
 INSERT INTO
     users (
         id,
@@ -133,7 +149,9 @@ VALUES (
     );
 
 -- Create Product
+
 -- criar um novo produto na tabela
+
 INSERT INTO
     products (
         id,
@@ -151,23 +169,52 @@ VALUES (
     );
 
 -- Delete User By Id
+
 -- deleção de user
-DELETE FROM users
-WHERE id = '01';   
+
+DELETE FROM users WHERE id = '01';
 
 -- Delete Products By Id
+
 -- deleção de product
-DELETE FROM products
-WHERE id = '001' ;
+
+DELETE FROM products WHERE id = '001' ;
 
 -- Edit Product By id
+
 -- Edição de produto por id
+
 -- query editando colunas do item
+
 UPDATE products
-SET 
+SET
     id = '0001',
     name = 'januticaba',
     price = 100,
     description = 'a minha fruta preferida',
     image_url = 'pena que só a vejo por foto'
-WHERE id = '005'    
+WHERE id = '005';
+
+
+--EXERCICIO 27/06
+CREATE TABLE
+    purchases (
+        id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        buyer TEXT NOT NULL,
+        total_price REAL NOT NULL,
+        created_at TEXT NOT NULL,
+        FOREIGN KEY (buyer) REFERENCES users(id)
+    );
+
+INSERT INTO
+    purchases (
+        id,
+        buyer,
+        total_price,
+        created_at
+    )
+VALUES ('', '', 70, '');
+
+SELECT *FROM purchases
+INDEX JOIN users
+ON user.id = purchases.buyer

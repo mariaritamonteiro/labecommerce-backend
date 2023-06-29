@@ -2,7 +2,7 @@
 GET http://localhost:3003/users
 
 ###Get All Products 
-GET http://localhost:3003/product
+GET http://localhost:3003/products
 
 ###Get All Products /refatorado
 GET http://localhost:3003/products?name=mesa

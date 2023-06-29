@@ -1,8 +1,7 @@
-import { products, users } from "./database";
+import { products, users } from "./database/database";
 import express, { Request, Response, response } from 'express'
 import cors from 'cors';
 import { TProducts, TUsers } from "./types";
-
 
 const app = express();
 app.use(cors());
@@ -152,15 +151,12 @@ app.post("/products", (req: Request, res: Response) => {
             res.status(500).send('Error desconhecido')
         }
     }
-
-
 })
 
 //Delete User by id
 app.delete("/users/:id", (req: Request, res: Response) => {
     try {
         const id = req.params.id
-
 
         const findUserIndex = users.findIndex((user) => {
             return user.id === id
@@ -182,8 +178,6 @@ app.delete("/users/:id", (req: Request, res: Response) => {
             res.status(500).send('Error desconhecido')
         }
     }
-
-
 })
 
 //Delete Product by id
