@@ -11,6 +11,8 @@ CREATE TABLE
         created_at TEXT NOT NULL
     );
 
+DROP TABLE users;
+
 --Inserir dados na tabela
 
 INSERT INTO
@@ -26,19 +28,25 @@ VALUES (
         'Maria',
         'marylinda@gmail.com',
         'mary123',
-        'hoje-agora'
+        '20-02-1998'
     ), (
         '02',
         'Gilmar',
         'love@email.com',
         'love1234',
-        'hoje-agora-smpre'
+        '20-22-1596'
     ), (
         '03',
         'Henry',
         'lovetia@gmail.com',
         'baby153',
-        'hoje-e-eternamente'
+        '30-03-1589'
+    ), (
+        '04',
+        'Alladin',
+        'catlove@gmail.com',
+        'cat153',
+        '14-52-6952'
     );
 
 --Para visualzar a estrutura da tabela
@@ -104,69 +112,17 @@ VALUES (
         60,
         'amo o suco dele',
         'dilicinha demais!!'
-    );
-
---Visualizando a estrutura da tabela
-
-SELECT *FROM products;
-
--- Get All User
-
--- retorna todas as pessoas cadastradas
-
-SELECT * FROM users;
-
--- Get All Products (funcionalida 1)
-
--- retorna todos os produtos cadastradas
-
-SELECT * FROM products;
-
--- Get all Products (funcionalida 2)
-
--- retorna todos os produtos que possuem "a" no seu nome.
-
-SELECT * FROM products WHERE name LIKE '%a%';
-
--- Create user
-
--- criar uma nova pessoa na Tabela
-
-INSERT INTO
-    users (
-        id,
-        name,
-        email,
-        password,
-        created_at
-    )
-VALUES (
-        '04',
-        'Alladin',
-        'catlove@gmail.com',
-        'cat153',
-        'amo-muito-meu-nenem'
-    );
-
--- Create Product
-
--- criar um novo produto na tabela
-
-INSERT INTO
-    products (
-        id,
-        name,
-        price,
-        description,
-        image_url
-    )
-VALUES (
+    ), (
         '006',
         'manga',
         70,
         'de vez é melhor ainda',
         'desse jeito na imagem!!'
     );
+
+--Visualizando a estrutura da tabela
+
+SELECT *FROM products;
 
 -- Delete User By Id
 
@@ -195,26 +151,33 @@ SET
     image_url = 'pena que só a vejo por foto'
 WHERE id = '005';
 
-
 --EXERCICIO 27/06
+
 CREATE TABLE
     purchases (
         id TEXT PRIMARY KEY UNIQUE NOT NULL,
         buyer TEXT NOT NULL,
         total_price REAL NOT NULL,
-        created_at TEXT NOT NULL,
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (buyer) REFERENCES users(id)
     );
 
-INSERT INTO
-    purchases (
-        id,
-        buyer,
-        total_price,
-        created_at
-    )
-VALUES ('', '', 70, '');
+DROP TABLE purchases;
 
-SELECT *FROM purchases
-INDEX JOIN users
-ON user.id = purchases.buyer
+SELECT *FROM purchases;
+
+INSERT INTO
+    purchases (id, buyer, total_price)
+VALUES ('P001', '02', 50), ('P002', '03', 60), ('P003', '01', 40), ('P004', '04', 40);
+
+UPDATE purchases SET total_price = 80 WHERE id = 'P001';
+
+SELECT
+    users.id AS userId,
+    purchases.id AS orderId,
+    users.name,
+    users.email,
+    purchases.total_price,
+    purchases.created_at
+FROM purchases
+    JOIN users ON purchases.buyer = users.id;
