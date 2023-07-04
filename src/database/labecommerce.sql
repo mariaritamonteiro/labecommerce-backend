@@ -11,7 +11,9 @@ CREATE TABLE
         created_at TEXT NOT NULL
     );
 
-DROP TABLE users;
+--tentar editar o created_at PARA  created_at TEXT NOT NULL DEFAULT(datetime('now','localtime'))
+    
+
 
 --Inserir dados na tabela
 
@@ -122,7 +124,7 @@ VALUES (
 
 --Visualizando a estrutura da tabela
 
-SELECT *FROM products;
+SELECT *FROM users;
 
 -- Delete User By Id
 
@@ -181,3 +183,32 @@ SELECT
     purchases.created_at
 FROM purchases
     JOIN users ON purchases.buyer = users.id;
+
+CREATE TABLE purchases_products(
+    purchase_id TEXT NOT NULL,
+    product_id TEXT NOT NULL,
+    quantity INTEGER NOT NULL,
+    FOREIGN KEY (purchase_id) REFERENCES  purchases(id),
+	FOREIGN KEY (product_id) REFERENCES  products(id)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+);
+
+INSERT INTO purchases_products(
+  purchase_id,
+  product_id,
+  quantity
+)VALUES('P001','006',2),('P002','004',5),('P003','002',1);
+
+
+SELECT *FROM products
+LEFT JOIN purchases_products ON products.id = purchases_products.product_id
+LEFT JOIN purchases ON purchases.id = purchases_products.purchase_id;
+
+UPDATE users
+SET id = '04'
+WHERE id = 'U004';
+
+
+
+
