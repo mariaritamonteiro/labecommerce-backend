@@ -50,11 +50,16 @@ app.get("/products", (req: Request, res: Response) => {
                 res.status(422)
                 throw new Error("O valor precisa ser uma string")
             }
+            if (!name || name.length <1) {
+                res.status(422)
+                throw new Error("O nome ..")
+            }
             const response = products.filter((product) => {
                 return product.name.toLowerCase().includes(name.toLowerCase())
             })
             res.status(200).send(response)
         }
+        res.status(200).send(response)
 
     } catch (error) {
         if (error instanceof Error) {
