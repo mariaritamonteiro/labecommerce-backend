@@ -1,4 +1,6 @@
-import { TUsers, TProducts } from "../types";
+//posso apagar esse arquivo
+
+/* import { TUsers, TProducts } from "../types";
 
 export const users: TUsers[] = [
     {
@@ -33,7 +35,7 @@ export const products: TProducts[] = [
         imageUrl: "algum site bacana"
     },
 
-]
+] */
 
 /* //createUser
 const createUser = (newUser: TUsers): void => {

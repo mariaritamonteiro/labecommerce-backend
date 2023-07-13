@@ -1,7 +1,10 @@
-import { products, users } from "./database/database";
-import express, { Request, Response, response } from 'express'
+
+import express, { Request, Response } from 'express'
 import cors from 'cors';
-import { TProducts, TUsers } from "./types";
+import { db } from './database/knex'
+
+
+
 
 const app = express();
 app.use(cors());
@@ -11,57 +14,54 @@ app.listen(3003, () => {
     console.log("Servidor rodando na porta 3003");
 });
 
-//testando aplicação
-app.get("/ping", (req: Request, res: Response) => {
-    res.send("Pong")
-})
 
-//Get All Users
-app.get("/users", (req: Request, res: Response) => {
+
+//Get All Users OK
+
+app.get("/users",async (req: Request, res: Response) => {
+
     try {
-        const name = req.query.name as string
-        let response;
-        if (name) {
-            response = users.filter((user) => {
-                return user.name.toLowerCase().includes(name.toLowerCase())
-            })
+        const result = await db.raw(`
+    SELECT * FROM users;
+    `)
+        res.status(200).send(result)
 
-        } else {
-            response = users
-        }
-        res.status(200).send(response)
+    /* const result = await db("users") //metodo buier  
+    res.status(200).send(result) */
+
     } catch (error) {
         if (error instanceof Error) {
             res.send(error.message)
-        } else {
+        }else{
             res.status(500).send("error desconhecido")
         }
     }
+
 
 })
 
 //Get All Products
 
-app.get("/products", (req: Request, res: Response) => {
+app.get("/products", async (req: Request, res: Response) => {
     try {
+
         const name = req.query.name
         if (name !== undefined) {
             if (typeof name !== "string") {
                 res.status(422)
-                throw new Error("O valor precisa ser uma string")
+                throw new Error("O nome precisa der uma string")
             }
-            if (!name || name.length <1) {
-                res.status(422)
-                throw new Error("O nome ..")
+            if (!name || name.length < 1) {
+                throw new Error("O nome precisa ter mais de um caractere")
             }
-            const response = products.filter((product) => {
-                return product.name.toLowerCase().includes(name.toLowerCase())
-            })
-            res.status(200).send(response)
         }
-        res.status(200).send(response)
 
-    } catch (error) {
+        const result = await db.raw(`
+        SELECT *FROM products;
+        `)
+        res.status(200).send(result)
+
+    } catch (error: any) {
         if (error instanceof Error) {
             res.send(error.message)
         } else {
@@ -72,29 +72,32 @@ app.get("/products", (req: Request, res: Response) => {
 })
 
 //Create User
-app.post("/users", (req: Request, res: Response) => {
+app.post("/users", async (req: Request, res: Response) => {
     try {
         const id = req.body.id as string
-        const name = req.body.name 
+        const name = req.body.name
         const email = req.body.email as string
         const password = req.body.password as string
-        const createdAt = req.body.createdAt as string
+        const created_at = req.body.createdAt as string
 
 
-        if(typeof name !== 'string') {
+        if (typeof name !== 'string') {
             res.status(400)
             throw new Error('O tipo do nome deve ser uma string');
         }
-        
-        const newUser: TUsers = {
-            id,
-            name,
-            email,
-            password,
-            createdAt
-        }
-        users.push(newUser)
-        res.status(201).send("cadastro realizado com sucesso!")
+
+        await db.raw(`
+             INSERT INTO users(
+                id,
+                name,
+                email,
+                password,
+                created_at
+             )
+             VALUES("${id}","${name}","${email}","${password}","${created_at}");
+        `)
+        res.status(200).send("cadastro realizado com sucesso!")
+
     } catch (error) {
         if (error instanceof Error) {
             res.send(error.message)
@@ -107,47 +110,48 @@ app.post("/users", (req: Request, res: Response) => {
 })
 
 //Create Product
-app.post("/products", (req: Request, res: Response) => {
+app.post("/products", async (req: Request, res: Response) => {
     try {
 
-        
+
         const id = req.body.id
         const name = req.body.name
-        const price = req.body.price 
-        const description = req.body.description 
-        const imageUrl = req.body.imageUrl 
+        const price = req.body.price
+        const description = req.body.description
+        const image_url = req.body.image_url
 
         if (name == undefined) {
             throw new Error("Informe o nome do produto");
-            
+
         }
         if (price == undefined) {
             throw new Error("Informe o preço do produto");
-            
+
         }
-        if (price<=0) {
+        if (price <= 0) {
             throw new Error("O preço informado não é aceito");
-            
+
         }
         if (description == undefined) {
             throw new Error("Informe a descrição do produto");
-            
+
         }
-        if (imageUrl == undefined) {
+        if (image_url == undefined) {
             throw new Error("Coloque a imagem do produto");
-            
+
         }
 
-        const newProduct: TProducts = {
-
-            id,
-            name,
-            price,
-            description,
-            imageUrl,
-        }
-        products.push(newProduct)
-        res.status(201).send("Produto cadastrado com sucesso!")
+        await db.raw(`
+        INSERT INTO products(
+        id ,
+        name ,
+        price,
+        description ,
+        image_url 
+        )
+        VALUES("${id}","${name}","${price}","${description}","${image_url}");
+   `)
+        res.status(200).send("cadastro realizado com sucesso!")
 
     } catch (error) {
         if (error instanceof Error) {
@@ -159,7 +163,7 @@ app.post("/products", (req: Request, res: Response) => {
 })
 
 //Delete User by id
-app.delete("/users/:id", (req: Request, res: Response) => {
+/* app.delete("/users/:id", (req: Request, res: Response) => {
     try {
         const id = req.params.id
 
@@ -183,17 +187,17 @@ app.delete("/users/:id", (req: Request, res: Response) => {
             res.status(500).send('Error desconhecido')
         }
     }
-})
-
+}) 
+ */
 //Delete Product by id
-app.delete("/product/:id", (req: Request, res: Response) => {
+/* app.delete("/product/:id", (req: Request, res: Response) => {
     try {
         const id = req.params.id
 
         const findProductsIndex = products.findIndex((product) => {
-            return product.id === id
+            returnid === id
         })
-         
+
         if (findProductsIndex < 0) {
             res.statusCode = 404
             throw new Error('Conta inexistente!')
@@ -215,37 +219,36 @@ app.delete("/product/:id", (req: Request, res: Response) => {
     }
 
 })
+ */
+//Edit Product by id ok
 
-//Edit Product by id
-
-app.put("/product/:id", (req: Request, res: Response) => {
+app.put("/products/:id", async(req: Request, res: Response) => {
     try {
-        const id = req.params.id as string | undefined
-        const newId = req.body as string | undefined
-        const name = req.body as string | undefined
-        const price = req.body as number | undefined
-        const description = req.body as string | undefined
-        const imagemUrl = req.body as string | undefined
+        const idToEdit = req.params.id 
 
-        const findProducts = products.find((product) => {
-            return product.id === id
-        })
-        if (findProducts === undefined) {
-            res.status(400)
-            throw new Error("O produto não existe, por isso não pode ser editado");
-            
-        }
-        if (findProducts) {
-            findProducts.id = newId || findProducts.id
-            findProducts.name = name || findProducts.name
-            findProducts.price = price || findProducts.price
-            findProducts.description = description || findProducts.description
-            findProducts.imageUrl = imagemUrl || findProducts.imageUrl
+        const newId = req.body.id as string | undefined
+        const name = req.body.name as string | undefined
+        const price = req.body.price as number | undefined
+        const newDescription = req.body.description as string | undefined
+        const newImageUrl = req.body.image_url as string | undefined
 
+       const[ product ]= await db("products").where({id:idToEdit})
+        if (product) {
+            await db .update({
+                id : newId || product.id,
+               name : name || product.name,
+               price : price || product. price,
+               description : newDescription || product.description,
+               image_url : newImageUrl || product.imageUrl
+
+            })
+            .from("products").where({id:idToEdit})
+           
             res.status(200).send("Atualização realizada com sucesso!")
         } else {
             res.status(200).send("Account not default!")
         }
+
     } catch (error) {
         if (error instanceof Error) {
             res.send(error.message)
@@ -255,6 +258,103 @@ app.put("/product/:id", (req: Request, res: Response) => {
     }
 
 })
+//delete product
+app.get("/products/:id", async (req:Request, res:Response)=>{
+    try {
+       const idToDelete = req.params.id;
+       const [product] = await db("products").where({id: idToDelete});
+      if (!product) {
+        res.status(400)
+        throw new Error('id not found!')
+      } 
+      await db("products").del().where({id: idToDelete});
+      res.status(200).send('produto deletado com sucesso');
+
+    } catch (error) {
+        if (res.statusCode === 200) {
+            res.status(500);
+        }
+        if (error instanceof Error) {
+            res.send(error.message);
+        } else {
+            res.status(500).send('Error desconhecido');
+        }
+    }
+});
+
+//Get Purchases
+
+app.get("/purchases", async (req:Request, res:Response)=>{
+    try {
+        const result = await db("purchases")
+        res.status(200).send(result)
+    } catch (error) {
+        if (error instanceof Error) {
+            res.send(error.message)
+        } else {
+            res.status(500).send('Error desconhecido')
+        }
+    }
+});
+
+//Get Purchases by id
+app.get("/purchases/:id", async (req:Request, res:Response)=>{
+    try {
+        const idToSearch = req.params.id;
+
+        if (idToSearch === "id") {
+            throw new Error ("Need to pass an Id.")
+        }
+
+        const [purchases] = await db("purchases").where("purchases.id", idToSearch)
+        if (!purchases) {
+            res.status(404)
+            throw new Error ("Id not found.")
+        }
+
+        const lista = await db("purchases_products").where({purchases_id: idToSearch})
+ 
+
+        const prodList = []
+
+        for (let product of lista) {
+            const [prod] = await db("products").where({
+                id: product.product_id
+            })
+            prodList.push(prod)
+        }
+
+        const [user] = await db("users").where({id: purchases.buyer})
+ 
+        const result = {
+            
+            purchase_id: purchases.id,
+            buyerId: user.id,
+            buyerName: user.name,
+            buyerEmail: user.email,
+            totalPrice:purchases.total_price,
+            createAt: purchases.createAt,
+            products: prodList
+
+        }
+
+        res.status(200).send(result)
+    } catch (error) {
+        if (error instanceof Error) {
+            res.send(error.message)
+        } else {
+            res.status(500).send('Error desconhecido')
+        }
+    }
+});
+
+
+
+
+
+
+
+
 
 
 

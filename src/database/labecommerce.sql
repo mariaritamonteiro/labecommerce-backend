@@ -54,6 +54,8 @@ VALUES (
 --Para visualzar a estrutura da tabela
 
 SELECT *FROM users;
+SELECT *FROM products;
+SELECT *FROM purchases;
 
 --Deletar tabela inteira
 
