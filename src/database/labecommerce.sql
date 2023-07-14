@@ -1,4 +1,4 @@
--- Active: 1687455032482@@127.0.0.1@3306
+-- Active: 1689279655427@@127.0.0.1@3306
 
 --Criando a tabela USERS
 
@@ -8,64 +8,8 @@ CREATE TABLE
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        created_at TEXT NOT NULL
+        created_at TEXT DEFAULT(DATETIME('now', 'localtime')) NOT NULL
     );
-
---tentar editar o created_at PARA  created_at TEXT NOT NULL DEFAULT(datetime('now','localtime'))
-    
-
-
---Inserir dados na tabela
-
-INSERT INTO
-    users(
-        id,
-        name,
-        email,
-        password,
-        created_at
-    )
-VALUES (
-        '01',
-        'Maria',
-        'marylinda@gmail.com',
-        'mary123',
-        '20-02-1998'
-    ), (
-        '02',
-        'Gilmar',
-        'love@email.com',
-        'love1234',
-        '20-22-1596'
-    ), (
-        '03',
-        'Henry',
-        'lovetia@gmail.com',
-        'baby153',
-        '30-03-1589'
-    ), (
-        '04',
-        'Alladin',
-        'catlove@gmail.com',
-        'cat153',
-        '14-52-6952'
-    );
-
---Para visualzar a estrutura da tabela
-
-SELECT *FROM users;
-SELECT *FROM products;
-SELECT *FROM purchases;
-
---Deletar tabela inteira
-
-DROP TABLE users;
-
---Visualizarr estrutura da tabela
-
-PRAGMA table_info ('users');
-
---Criando a tabela PRODUCTS
 
 CREATE TABLE
     products (
@@ -76,7 +20,47 @@ CREATE TABLE
         image_url TEXT NOT NULL
     );
 
---Inserindo dados na tabela
+CREATE TABLE
+    purchases (
+        id TEXT TEXT PRIMARY KEY UNIQUE NOT NULL,
+        buyer TEXT NOT NULL,
+        total_price REAL NOT NULL,
+        created_at TEXT DEFAULT(DATETIME('now', 'localtime')) NOT NULL,
+        FOREIGN KEY (buyer) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+    );
+
+CREATE TABLE
+    purchases_products(
+        purchase_id TEXT NOT NULL,
+        product_id TEXT NOT NULL,
+        quantity INTEGER NOT NULL,
+        FOREIGN KEY (purchase_id) REFERENCES purchases(id) ON UPDATE CASCADE ON DELETE CASCADE,
+        FOREIGN KEY (product_id) REFERENCES products(id) ON UPDATE CASCADE ON DELETE CASCADE
+    );
+
+INSERT INTO
+    users (id, name, email, password)
+VALUES (
+        'c001',
+        'Fulana',
+        'fulana@email.com',
+        '123456'
+    ), (
+        'c002',
+        'Fulano',
+        'fulano@email.com',
+        '123456'
+    ), (
+        'c003',
+        'Sicrana',
+        'sicrana@email.com',
+        '123456'
+    ), (
+        'c004',
+        'Fayra',
+        'fayra@email.com',
+        '123456'
+    );
 
 INSERT INTO
     products (
@@ -87,94 +71,54 @@ INSERT INTO
         image_url
     )
 VALUES (
-        '001',
-        'maça',
-        25,
-        'como, mas me da fomee',
-        'olha ela aii'
+        'p001',
+        'mouse',
+        100,
+        'esrdxfcghvbj',
+        'image'
     ), (
-        '002',
-        'laranja',
-        30,
-        'gosto das docinhas',
-        'igual essa'
+        'p002',
+        'teclado',
+        300,
+        'dsfcgjkn',
+        'image'
     ), (
-        '003',
-        'uva',
-        40,
-        'só não gosto do preço',
-        'belas e caras'
+        'p003',
+        'PC',
+        400,
+        'fdcghvbjn',
+        'image'
     ), (
-        '004',
-        'morango',
-        50,
-        'muito caro pro meu bolso',
-        'viu ai'
+        'p004',
+        'mouse gamer',
+        700,
+        'esrdxfcghvbj',
+        'image'
     ), (
-        '005',
-        'maracuja',
-        60,
-        'amo o suco dele',
-        'dilicinha demais!!'
+        'p005',
+        'teclado gamer',
+        900,
+        'dsfcgjkn',
+        'image'
     ), (
-        '006',
-        'manga',
-        70,
-        'de vez é melhor ainda',
-        'desse jeito na imagem!!'
+        'p006',
+        'PC gamer',
+        1000,
+        'fdcghvbjn',
+        'image'
     );
-
---Visualizando a estrutura da tabela
-
-SELECT *FROM users;
-
--- Delete User By Id
-
--- deleção de user
-
-DELETE FROM users WHERE id = '01';
-
--- Delete Products By Id
-
--- deleção de product
-
-DELETE FROM products WHERE id = '001' ;
-
--- Edit Product By id
-
--- Edição de produto por id
-
--- query editando colunas do item
-
-UPDATE products
-SET
-    id = '0001',
-    name = 'januticaba',
-    price = 100,
-    description = 'a minha fruta preferida',
-    image_url = 'pena que só a vejo por foto'
-WHERE id = '005';
-
---EXERCICIO 27/06
-
-CREATE TABLE
-    purchases (
-        id TEXT PRIMARY KEY UNIQUE NOT NULL,
-        buyer TEXT NOT NULL,
-        total_price REAL NOT NULL,
-        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (buyer) REFERENCES users(id)
-    );
-
-DROP TABLE purchases;
-
-SELECT *FROM purchases;
 
 INSERT INTO
-    purchases (id, buyer, total_price)
-VALUES ('P001', '02', 50), ('P002', '03', 60), ('P003', '01', 40), ('P004', '04', 40);
+    purchases(id, buyer, total_price)
+VALUES ('P001', 'c001', 300), ('P002', 'c003', 400), ('P003', 'c002', 500);
 
-UPDATE purchases SET total_price = 80 WHERE id = 'P001';
+INSERT INTO
+    purchases_products(
+        purchase_id,
+        product_id,
+        quantity
+    )
+VALUES ('P001', 'p001', 2), ('P002', 'p002', 3), ('P003', 'p003', 4);
 
 SELECT
     users.id AS userId,
@@ -186,31 +130,12 @@ SELECT
 FROM purchases
     JOIN users ON purchases.buyer = users.id;
 
-CREATE TABLE purchases_products(
-    purchase_id TEXT NOT NULL,
-    product_id TEXT NOT NULL,
-    quantity INTEGER NOT NULL,
-    FOREIGN KEY (purchase_id) REFERENCES  purchases(id),
-	FOREIGN KEY (product_id) REFERENCES  products(id)
-    ON UPDATE CASCADE
-    ON DELETE RESTRICT
-);
+SELECT *
+FROM products
+    LEFT JOIN purchases_products ON products.id = purchases_products.product_id
+    LEFT JOIN purchases ON purchases.id = purchases_products.purchase_id;
 
-INSERT INTO purchases_products(
-  purchase_id,
-  product_id,
-  quantity
-)VALUES('P001','006',2),('P002','004',5),('P003','002',1);
-
-
-SELECT *FROM products
-LEFT JOIN purchases_products ON products.id = purchases_products.product_id
-LEFT JOIN purchases ON purchases.id = purchases_products.purchase_id;
-
-UPDATE users
-SET id = '04'
-WHERE id = 'U004';
-
-
-
-
+SELECT *FROM users;    
+SELECT *FROM products;    
+SELECT *FROM purchases;    
+SELECT *FROM purchases_products;    
