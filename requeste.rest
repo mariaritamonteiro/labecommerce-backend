@@ -7,7 +7,6 @@ GET http://localhost:3003/products?name=mesa
 
 
 
-
 ###Create User
 POST http://localhost:3003/users
 content-type:application/json

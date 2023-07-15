@@ -8,7 +8,6 @@ export type TUsers = {
     createdAt: string,
 
 }
-
 export type TProducts = {
 
     id: string,
@@ -17,4 +16,9 @@ export type TProducts = {
     description: string,
     imageUrl: string,
 
+}
+export type TPurchases = {
+    id: string,
+    buyer: string,
+    total_price: number
 }
