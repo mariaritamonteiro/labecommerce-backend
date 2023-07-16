@@ -15,7 +15,7 @@ Primeiro projeto em backend
 # Layout 
 - Estrutura das pastas
 
-![estrutura-das-pasta](../labecommerce-backend/src/assents/Captura%20de%20Tela%20(717).png)
+![estrutura-das-pasta](./src/assents/Captura%20de%20Tela%20(717).png)
 
 # Requisições(Paths)
 ## Requisições de Usuários
@@ -269,7 +269,7 @@ $ npm run dev:server
 # O servidor inciará na porta:3003 - acesse <http://localhost:3003>
 ```
 # Desenvolvedor(a)
-<img style="width:200px" src="../labecommerce-backend/src/assents/img redme.jpg" >
+<img style="width:200px" src="./src/assents/img redme.jpg" >
 <br><br>
 <b>Maria Rita Monteiro<b>
 
