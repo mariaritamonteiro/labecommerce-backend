@@ -221,7 +221,7 @@ app.post("/purchases", async (req: Request, res: Response) => {
     }
 });
 //Delete purchase by id
-app.delete("/purchases/:id", async (req: Request, res: Response) => {
+app.delete("/purchases/:id", async (req: Request, res: Response) => {""
     try {
         const idToDelete = req.params.id
         const [purchase] = await db("purchases").where({ id: idToDelete });
