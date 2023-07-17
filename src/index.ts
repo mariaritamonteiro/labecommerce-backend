@@ -7,6 +7,8 @@ import { TPurchases, TUsers, TProducts } from './types';
 const app = express();
 app.use(cors());
 app.use(express.json());
+git add .
+
 
 app.listen(3003, () => {
     console.log("Servidor rodando na porta 3003");
